@@ -2,8 +2,25 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const admin = require('firebase-admin');
-const serviceAccount = require("./firebaseauth.json");
+const dotenv = require('dotenv');
+// const serviceAccount = require("./firebaseauth.json");
+dotenv.config({ path: 'firebase.env' });
 
+const firebaseAdminPrivateKey = process.env.private_key.replace(/\\n/g, '\n');
+console.log(firebaseAdminPrivateKey);
+
+const serviceAccount = {
+  type: 'service_account',
+  project_id: process.env.project_id,
+  private_key_id: process.env.private_key_id,
+  private_key: firebaseAdminPrivateKey,
+  client_email: process.env.client_email,
+  client_id: process.env.client_id,
+  auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+  token_uri: 'https://oauth2.googleapis.com/token',
+  auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
+  client_x509_cert_url: process.env.client_x509_cert_url,
+};
 const app = express();
 const port = process.env.PORT || 3000;
 
